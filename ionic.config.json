@@ -1,0 +1,7 @@
+{
+  "name": "every-day-app",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "vue-vite"
+}
