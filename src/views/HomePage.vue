@@ -19,7 +19,9 @@
           @click="toggleCheckOff(item.id)"
         >
           <ion-label>
-            <div>{{ item.name }}</div>
+            <div :class="{ 'checked-today': isCheckedToday(item.checkedDays) }">
+              {{ item.name }}
+            </div>
             <div style="font-size: small; color: grey">
               Total: {{ calculateTotalDays(item.checkedDays) }}, Streak:
               {{ calculateStreak(item.checkedDays) }}
@@ -47,6 +49,7 @@ import {
   IonList,
   IonItem,
   IonLabel,
+  IonCheckbox,
   IonButtons,
   IonButton,
   IonIcon,
