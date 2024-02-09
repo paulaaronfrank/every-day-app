@@ -7,9 +7,12 @@
 ## Features
 
 - **Daily Goals Tracking:** Easily add and check off your everyday items to stay on top of your goals.
-- **Weekly and Monthly Overviews:** Visualize your consistency and progress with intuitive weekly (Calendar Week) and monthly summaries.
 - **Simple and Effective Interface:** Focus on what matters with an app designed to be straightforward and efficient.
-- **Smartwatch Integration:** Challenge yourself further by syncing with your smartwatch to track your progress on the go (future).
+
+## Roadmap
+
+- **Weekly and Monthly Overviews:** Visualize your consistency and progress with intuitive weekly (Calendar Week) and monthly summaries.
+- **Smartwatch Integration:** Challenge yourself further by syncing with your smartwatch to track your progress on the go.
 
 ## Getting Started
 
@@ -22,7 +25,7 @@ Before you begin, ensure you have [Node.js](https://nodejs.org/) installed on yo
 Clone the repository to your local machine:
 
 ```
-git clone https://github.com/yourusername/every-day.git
+git clone https://github.com/paulaaronfrank/every-day.git
 cd every-day
 ```
 
@@ -46,7 +49,11 @@ To start the development server:
 npm run dev
 ```
 
-Now, you can open your browser and navigate to `http://localhost:3000` to see the app in action.
+Now, you can open your browser and navigate to `http://localhost:5173` to see the app in action.
+
+## Generating App Icons
+
+Follow the documentation at [Capactor Guides](https://capacitorjs.com/docs/guides/splash-screens-and-icons).
 
 ## Contributing
 
