@@ -111,8 +111,7 @@ const headerTitle = ref("Every Day");
 
 const items = ref<Item[]>([]);
 
-const pressTimer = ref(null);
-
+const pressTimer = ref();
 const handlePress = (item: Item) => {
   pressTimer.value = setTimeout(() => {
     deleteItemAlert(item);
@@ -124,7 +123,6 @@ const cancelPress = () => {
 };
 
 const deleteItemAlert = async (item: Item) => {
-  console.log("Delete item");
   const alert = await alertController.create({
     header: "Delete Item",
     message: `Are you sure you want to delete "${item.name}"?`,
@@ -219,16 +217,16 @@ const showRepeatWeeklyPrompt = async (name: string) => {
     message: "We love ambition! Do you want daily or weekly repition stats?",
     buttons: [
       {
+        text: "Weekly",
+        handler: () => {
+          addItem(name, true);
+        },
+      },
+      {
         text: "Daily",
         role: "cancel",
         handler: () => {
           addItem(name, false);
-        },
-      },
-      {
-        text: "Weekly",
-        handler: () => {
-          addItem(name, true);
         },
       },
     ],
@@ -397,8 +395,6 @@ function getWeekNumber(d: Date) {
 
 function calculateRoundedPercentage(numerator: number, denominator: number) {
   if (denominator === 0) {
-    // Prevent division by zero
-    console.error("Denominator cannot be zero.");
     return 0;
   }
 
