@@ -360,7 +360,7 @@ const calculateDailyPercentile = (checkedDays: number[]) => {
   const totalDays = Math.ceil((today - firstCheckIn) / (1000 * 60 * 60 * 24));
   const activeDays = checkedDays.length;
 
-  return (activeDays / totalDays) * 100;
+  return calculateRoundedPercentage(activeDays, totalDays);
 };
 
 const calculateWeeklyPercentile = (checkedDays: number[]) => {
@@ -383,7 +383,7 @@ const calculateWeeklyPercentile = (checkedDays: number[]) => {
     0
   );
 
-  return (totalCheckIns / totalWeeks) * 100;
+  return calculateRoundedPercentage(totalCheckIns, totalWeeks);
 };
 
 // Helper function to get the ISO week number
@@ -393,6 +393,19 @@ function getWeekNumber(d: Date) {
   const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
   const weekNo = Math.ceil(((d - yearStart) / 86400000 + 1) / 7);
   return d.getUTCFullYear() + "-W" + weekNo;
+}
+
+function calculateRoundedPercentage(numerator: number, denominator: number) {
+  if (denominator === 0) {
+    // Prevent division by zero
+    console.error("Denominator cannot be zero.");
+    return 0;
+  }
+
+  let percentage = (numerator / denominator) * 100;
+  percentage = Number(percentage.toFixed(1));
+
+  return percentage;
 }
 </script>
 
