@@ -96,7 +96,6 @@ import {
   IonButton,
   IonIcon,
   alertController,
-  IonModal,
 } from "@ionic/vue";
 import { addOutline } from "ionicons/icons";
 
@@ -126,7 +125,7 @@ const cancelPress = () => {
 
 const deleteItemAlert = async (item: Item) => {
   console.log("Delete item");
-  let alert = await alertController.create({
+  const alert = await alertController.create({
     header: "Delete Item",
     message: `Are you sure you want to delete "${item.name}"?`,
     buttons: [
@@ -185,7 +184,7 @@ onMounted(() => {
 
 const showAddItemPrompt = async () => {
   // First, ask for the item name
-  let alert = await alertController.create({
+  const alert = await alertController.create({
     header: "Add New Item",
     inputs: [
       {
@@ -215,7 +214,7 @@ const showAddItemPrompt = async () => {
 };
 
 const showRepeatWeeklyPrompt = async (name: string) => {
-  let alert = await alertController.create({
+  const alert = await alertController.create({
     header: "Every Day?",
     message: "We love ambition! Do you want daily or weekly repition stats?",
     buttons: [
@@ -295,7 +294,7 @@ const calculateDailyStreak = (checkedDays: number[]) => {
   let today = new Date();
   today = new Date(today.getFullYear(), today.getMonth(), today.getDate()); // Normalize to start of the day
 
-  let checkingDay = today;
+  const checkingDay = today;
   let foundToday = false;
 
   // Loop backwards through the sorted list of checked days
@@ -395,17 +394,6 @@ function getWeekNumber(d: Date) {
   const weekNo = Math.ceil(((d - yearStart) / 86400000 + 1) / 7);
   return d.getUTCFullYear() + "-W" + weekNo;
 }
-
-const calendarEvents = computed(() => {
-  return selectedItem.value.checkedDays.map((day) => {
-    return {
-      start: new Date(day),
-      end: new Date(day),
-      title: "Checked",
-      // Customize event appearance as needed
-    };
-  });
-});
 </script>
 
 <style scoped>
