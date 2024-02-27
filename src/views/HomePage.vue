@@ -17,15 +17,20 @@
           v-for="item in dailyItems"
           :key="item.id"
           @click="toggleCheckOff(item.id)"
+          @touchstart="handlePress(item)"
+          @mousedown="handlePress(item)"
+          @touchend="cancelPress"
+          @mouseup="cancelPress"
+          @mouseleave="cancelPress"
         >
           <ion-label>
             <div :class="{ 'checked-today': isCheckedToday(item.checkedDays) }">
               {{ item.name }}
             </div>
             <div style="font-size: small; color: grey">
-              Total: {{ calculateTotalDays(item.checkedDays) }}, Streak:
-              {{ calculateDailyStreak(item.checkedDays) }}, Rate:
-              {{ calculateDailyPercentile(item.checkedDays) }}%
+              Total: {{ calculateTotalDays(item.checkedDays) }}, Rate:
+              {{ calculateDailyPercentile(item.checkedDays) }}%, Streak:
+              {{ calculateDailyStreak(item.checkedDays) }}
             </div>
           </ion-label>
           <ion-checkbox
@@ -48,15 +53,20 @@
           v-for="item in weeklyItems"
           :key="item.id"
           @click="toggleCheckOff(item.id)"
+          @touchstart="handlePress(item)"
+          @mousedown="handlePress(item)"
+          @touchend="cancelPress"
+          @mouseup="cancelPress"
+          @mouseleave="cancelPress"
         >
           <ion-label>
             <div :class="{ 'checked-today': isCheckedToday(item.checkedDays) }">
               {{ item.name }}
             </div>
             <div style="font-size: small; color: grey">
-              Total: {{ calculateTotalDays(item.checkedDays) }}, Streak:
-              {{ calculateWeeklyStreak(item.checkedDays) }}, Rate:
-              {{ calculateWeeklyPercentile(item.checkedDays) }}%
+              Total: {{ calculateTotalDays(item.checkedDays) }}, Rate:
+              {{ calculateWeeklyPercentile(item.checkedDays) }}%, Streak:
+              {{ calculateWeeklyStreak(item.checkedDays) }}
             </div>
           </ion-label>
           <ion-checkbox
@@ -86,6 +96,7 @@ import {
   IonButton,
   IonIcon,
   alertController,
+  IonModal,
 } from "@ionic/vue";
 import { addOutline } from "ionicons/icons";
 
@@ -100,6 +111,41 @@ interface Item {
 const headerTitle = ref("Every Day");
 
 const items = ref<Item[]>([]);
+
+const pressTimer = ref(null);
+
+const handlePress = (item: Item) => {
+  pressTimer.value = setTimeout(() => {
+    deleteItemAlert(item);
+  }, 500); // Adjust time as needed for press-and-hold detection
+};
+
+const cancelPress = () => {
+  clearTimeout(pressTimer.value);
+};
+
+const deleteItemAlert = async (item: Item) => {
+  console.log("Delete item");
+  let alert = await alertController.create({
+    header: "Delete Item",
+    message: `Are you sure you want to delete "${item.name}"?`,
+    buttons: [
+      {
+        text: "Cancel",
+        role: "cancel",
+      },
+      {
+        text: "Delete",
+        handler: () => {
+          item.deleted = true;
+          saveItems();
+        },
+      },
+    ],
+  });
+
+  await alert.present();
+};
 
 const dailyItems = computed(() => {
   return items.value.filter((item) => !item.deleted && !item.everyWeek);
@@ -349,6 +395,17 @@ function getWeekNumber(d: Date) {
   const weekNo = Math.ceil(((d - yearStart) / 86400000 + 1) / 7);
   return d.getUTCFullYear() + "-W" + weekNo;
 }
+
+const calendarEvents = computed(() => {
+  return selectedItem.value.checkedDays.map((day) => {
+    return {
+      start: new Date(day),
+      end: new Date(day),
+      title: "Checked",
+      // Customize event appearance as needed
+    };
+  });
+});
 </script>
 
 <style scoped>
